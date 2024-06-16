@@ -170,11 +170,11 @@
         fetch('/all/random')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('population').textContent = data.population;
-                document.getElementById('area').textContent = data.area;
-                document.getElementById('popDensity').textContent = data.popdensity;
-                document.getElementById('coastlineRatio').textContent = data.coastlineratio;
-                document.getElementById('gdpPerCapita').textContent = data.gdppercapita;
+                document.getElementById('population').textContent = parseInt(data.population).toLocaleString('en-US').replace(/,/g, ' ');
+                document.getElementById('area').textContent = parseInt(data.area).toLocaleString('en-US').replace(/,/g, ' ');
+                document.getElementById('popDensity').textContent = (data.popdensity);
+                document.getElementById('coastlineRatio').textContent = (data.coastlineratio);
+                document.getElementById('gdpPerCapita').textContent = parseInt(data.gdppercapita).toLocaleString('en-US').replace(/,/g, ' ');
 
                 randomCountryData = data;
             })
@@ -192,11 +192,11 @@
     function updateHint(hintElementId, randomValue, userValue) {
         const hintElement = document.getElementById(hintElementId);
         if (randomValue > userValue) {
-            hintElement.textContent = '↑';
+            hintElement.textContent = '⬆️';
         } else if (randomValue < userValue) {
-            hintElement.textContent = '↓';
+            hintElement.textContent = '⬇️';
         } else {
-            hintElement.textContent = '=';
+            hintElement.textContent = '✅';
         }
     }
 

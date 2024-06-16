@@ -70,6 +70,11 @@
         button:hover {
             background-color: #333;
         }
+        .message {
+            font-size: 1.5em;
+            color: deeppink;
+            margin-top: 1em;
+        }
     </style>
 </head>
 <body>
@@ -81,41 +86,84 @@
         <tr>
             <th>Parameter</th>
             <th>Value</th>
+            <th>Hints</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>Population</td>
             <td id="population"></td>
+            <td id="populationHint"></td>
         </tr>
         <tr>
             <td>Area (sq. mi.)</td>
             <td id="area"></td>
+            <td id="areaHint"></td>
         </tr>
         <tr>
             <td>Pop. Density (per sq. mi.)</td>
             <td id="popDensity"></td>
+            <td id="popDensityHint"></td>
         </tr>
         <tr>
             <td>Coastline (ratio: coast / area)</td>
             <td id="coastlineRatio"></td>
+            <td id="coastlineRatioHint"></td>
         </tr>
         <tr>
             <td>GDP ($ per capita)</td>
             <td id="gdpPerCapita"></td>
+            <td id="gdpPerCapitaHint"></td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class="input-container">
-    <input type="text" id="countryNameInput" placeholder="Enter country name" />
+    <label for="countryNameInput"></label><input type="text" id="countryNameInput" list="countryList" placeholder="Enter country name" oninput="validateCountry()" />
+    <datalist id="countryList"></datalist>
 </div>
-<button type="button" onclick="submitForm()">Submit</button>
+<button type="button" id="submitButton" onclick="submitForm()" disabled>Submit</button>
+<div id="message" class="message"></div>
 
 <script>
+    let randomCountryData = {}
+    let countryNames = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchCountryList();
+        fetchRandomCountry();
+    });
+
+    // function submitForm() {
+    //     var countryName = document.getElementById('countryNameInput').value;
+    //     console.log('Country Name:', countryName);
+    //
+    // }
+
+    function fetchCountryList() {
+        fetch('/all/countries')
+            .then(response => response.json())
+            .then(data => {
+                countryNames = data.map(country => country.country);
+                const datalist = document.getElementById('countryList');
+                data.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.country;
+                    datalist.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching country list:', error));
+    }
+
     function submitForm() {
-        var countryName = document.getElementById('countryNameInput').value;
-        console.log('Country Name:', countryName);
+        const countryName = document.getElementById('countryNameInput').value;
+        fetch(`/all/${countryName}`)
+            .then(response => response.json())
+            .then(userCountryData => {
+                updateHints(randomCountryData, userCountryData);
+                checkGuess(countryName, randomCountryData.country);
+            })
+            .catch(error => console.error('Error fetching country data:', error));
     }
 
     function fetchRandomCountry() {
@@ -127,9 +175,46 @@
                 document.getElementById('popDensity').textContent = data.popdensity;
                 document.getElementById('coastlineRatio').textContent = data.coastlineratio;
                 document.getElementById('gdpPerCapita').textContent = data.gdppercapita;
+
+                randomCountryData = data;
             })
             .catch(error => console.error('Error fetching random country:', error));
     }
+
+    function updateHints(randomData, userData) {
+        updateHint('populationHint', randomData.population, userData.population);
+        updateHint('areaHint', randomData.area, userData.area);
+        updateHint('popDensityHint', randomData.popdensity, userData.popdensity);
+        updateHint('coastlineRatioHint', randomData.coastlineratio, userData.coastlineratio);
+        updateHint('gdpPerCapitaHint', randomData.gdppercapita, userData.gdppercapita);
+    }
+
+    function updateHint(hintElementId, randomValue, userValue) {
+        const hintElement = document.getElementById(hintElementId);
+        if (randomValue > userValue) {
+            hintElement.textContent = '↑';
+        } else if (randomValue < userValue) {
+            hintElement.textContent = '↓';
+        } else {
+            hintElement.textContent = '=';
+        }
+    }
+
+    function validateCountry() {
+        const countryNameInput = document.getElementById('countryNameInput').value;
+        const submitButton = document.getElementById('submitButton');
+        submitButton.disabled = !countryNames.includes(countryNameInput);
+    }
+
+    function checkGuess(userCountryName, randomCountryName) {
+        const messageElement = document.getElementById('message');
+        if (userCountryName.toLowerCase() === randomCountryName.toLowerCase()) {
+            messageElement.textContent = `Congratulations! Your guess is correct, the mysterious country is ${randomCountryName}.`;
+        } else {
+            messageElement.textContent = '';
+        }
+    }
+
 
     // Fetch random country data when the page loads
     fetchRandomCountry();

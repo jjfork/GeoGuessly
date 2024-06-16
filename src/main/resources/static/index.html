@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoGuessly</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f8f8;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 1em;
+        }
+        .table-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 0.75em;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .input-container {
+            width: 50%;
+            max-width: 400px;
+            margin: 1em 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 0.75em 1.5em;
+            border: none;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 1em;
+        }
+        button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+<h1>GeoGuessly</h1>
+<p>Guess the country based on these stats!</p>
+<div class="table-container">
+    <table id="countryTable">
+        <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Population</td>
+            <td id="population"></td>
+        </tr>
+        <tr>
+            <td>Area (sq. mi.)</td>
+            <td id="area"></td>
+        </tr>
+        <tr>
+            <td>Pop. Density (per sq. mi.)</td>
+            <td id="popDensity"></td>
+        </tr>
+        <tr>
+            <td>Coastline (ratio: coast / area)</td>
+            <td id="coastlineRatio"></td>
+        </tr>
+        <tr>
+            <td>GDP ($ per capita)</td>
+            <td id="gdpPerCapita"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="input-container">
+    <input type="text" id="countryNameInput" placeholder="Enter country name" />
+</div>
+<button type="button" onclick="submitForm()">Submit</button>
+
+<script>
+    function submitForm() {
+        var countryName = document.getElementById('countryNameInput').value;
+        // You can process the form submission here if needed
+        console.log('Country Name:', countryName);
+    }
+
+    function fetchRandomCountry() {
+        fetch('/random')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('population').textContent = data.population;
+                document.getElementById('area').textContent = data.area;
+                document.getElementById('popDensity').textContent = data.popdensity;
+                document.getElementById('coastlineRatio').textContent = data.coastlineratio;
+                document.getElementById('gdpPerCapita').textContent = data.gdppercapita;
+            })
+            .catch(error => console.error('Error fetching random country:', error));
+    }
+
+    // Fetch random country data when the page loads
+    fetchRandomCountry();
+</script>
+
+</body>
+</html>

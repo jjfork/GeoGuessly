@@ -42,19 +42,19 @@ public class CountryResource {
         return randomCountry;
     }
 
-    @GetMapping("/{name}")
-    public Country getByName(@PathVariable String name) {
-        Country country = countryService.findByCountryName(name);
-        logger.info("Response: Returning specific country details:\n ID={},\n Country={},\n Population={},\n Area={},\n PopDensity={},\n CoastlineRatio={},\n GDPPerCapita={}",
-                country.getId(),
-                country.getCountry(),
-                country.getPopulation(),
-                country.getArea(),
-                country.getPopdensity(),
-                country.getCoastlineratio(),
-                country.getGdppercapita());
-        return country;
-    }
+//    @GetMapping("/{name}")
+//    public Country getByName(@PathVariable String name) {
+//        Country country = countryService.findByCountryName(name);
+//        logger.info("Response: Returning specific country details:\n ID={},\n Country={},\n Population={},\n Area={},\n PopDensity={},\n CoastlineRatio={},\n GDPPerCapita={}",
+//                country.getId(),
+//                country.getCountry(),
+//                country.getPopulation(),
+//                country.getArea(),
+//                country.getPopdensity(),
+//                country.getCoastlineratio(),
+//                country.getGdppercapita());
+//        return country;
+//    }
 
     @GetMapping(value = "/countries")
     public List<Country> getAll() {

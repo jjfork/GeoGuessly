@@ -119,7 +119,7 @@
     }
 
     function fetchRandomCountry() {
-        fetch('/random')
+        fetch('/all/random')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('population').textContent = data.population;

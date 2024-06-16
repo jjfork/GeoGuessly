@@ -3,6 +3,7 @@ package pwr.git.geoguessly.resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwr.git.geoguessly.persistence.Country;
 import pwr.git.geoguessly.service.CountryService;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
+@RequestMapping("/all")
 public class CountryResource {
 
     private static final Logger logger = LoggerFactory.getLogger(CountryResource.class);
@@ -42,19 +44,19 @@ public class CountryResource {
         return randomCountry;
     }
 
-//    @GetMapping("/{name}")
-//    public Country getByName(@PathVariable String name) {
-//        Country country = countryService.findByCountryName(name);
-//        logger.info("Response: Returning specific country details:\n ID={},\n Country={},\n Population={},\n Area={},\n PopDensity={},\n CoastlineRatio={},\n GDPPerCapita={}",
-//                country.getId(),
-//                country.getCountry(),
-//                country.getPopulation(),
-//                country.getArea(),
-//                country.getPopdensity(),
-//                country.getCoastlineratio(),
-//                country.getGdppercapita());
-//        return country;
-//    }
+    @GetMapping("/{name}")
+    public Country getByName(@PathVariable String name) {
+        Country specificCountry = countryService.findByCountryName(name);
+        logger.info("Response: Returning specific country details:\n ID={},\n Country={},\n Population={},\n Area={},\n PopDensity={},\n CoastlineRatio={},\n GDPPerCapita={}",
+                specificCountry.getId(),
+                specificCountry.getCountry(),
+                specificCountry.getPopulation(),
+                specificCountry.getArea(),
+                specificCountry.getPopdensity(),
+                specificCountry.getCoastlineratio(),
+                specificCountry.getGdppercapita());
+        return specificCountry;
+    }
 
     @GetMapping(value = "/countries")
     public List<Country> getAll() {

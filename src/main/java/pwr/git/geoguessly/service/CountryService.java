@@ -3,7 +3,6 @@ package pwr.git.geoguessly.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pwr.git.geoguessly.persistence.Country;
-//import pwr.git.geoguessly.persistence.CountryCustomRepo;
 import pwr.git.geoguessly.persistence.CountryRepository;
 
 import java.util.List;
@@ -16,8 +15,6 @@ public class CountryService {
     @Autowired
     private final CountryRepository countryRepository;
 
-//    @Autowired
-//    private final CountryCustomRepo countryCustomRepo;
 
     public CountryService(CountryRepository repository) {
         this.countryRepository = repository;
@@ -32,8 +29,8 @@ public class CountryService {
         return this.countryRepository.findById(id).get();
     }
 
-//    public Country findByCountryName(String name) {
-//        return countryCustomRepo.findByCountryNameNative(name);
-//    }
+    public Country findByCountryName(String name) {
+        return this.countryRepository.findByCountry(name);
+    }
 
 }

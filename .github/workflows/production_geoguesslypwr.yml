@@ -34,7 +34,7 @@ jobs:
           echo "AZURE_TENANT_ID=$AZURE_TENANT_ID"          
           
 
-#      - name: Login to Azure
+#      - name: Login to Azure#
 #        uses: azure/login@v1
 #        with:
 #          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DD4E6239E87C4D9D8D6CE7A13F54D6F5 }}

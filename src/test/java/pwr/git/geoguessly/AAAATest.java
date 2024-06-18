@@ -1,9 +1,11 @@
 package pwr.git.geoguessly;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
 public class AAAATest {
-
-
-    public static void main(String[] args) {
+    @Test
+    void test() {
         // Retrieve and print the Azure Client ID
         String azureClientId = System.getenv("AZURE_CLIENT_ID");
         System.out.println("Azure Client ID: " + azureClientId);

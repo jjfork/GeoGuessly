@@ -14,7 +14,7 @@ public class AAAATest {
         String azureClientSecret = System.getenv("AZURE_CLIENT_SECRET");
         System.out.println("Azure Client Secret: " + azureClientSecret);
 
-        // Retrieve and print the Azure Tenant ID
+        // Retrieve and print the Azure Tenant IDX
         String azureTenantId = System.getenv("AZURE_TENANT_ID");
         System.out.println("Azure Tenant ID: " + azureTenantId);
     }
